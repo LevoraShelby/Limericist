@@ -1,0 +1,8 @@
+p, b, span {
+	font-family: monospace;
+}
+
+p.limerick {
+	white-space: pre-line;
+	font-family: monospace;
+}

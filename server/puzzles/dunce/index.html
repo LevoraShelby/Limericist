@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>The Dunce</title>
+		<link href='/default.css' rel='stylesheet' />
+		<script>
+			const mouseEvents = {
+				0: {
+					enter: e => e.target.innerText = 'f2int',
+					leave: e => e.target.innerText = 'flint'
+				},
+				1: {
+					enter: e => e.target.innerText = 'e7izabeth',
+					leave: e => e.target.innerText = 'elizabeth'
+				},
+				2: {
+					enter: e => e.target.innerText = 'g2ovanni',
+					leave: e => e.target.innerText = 'giovanni'
+				}
+			}
+			window.onload = () => {
+				const answerInput = document.querySelector('#answer')
+				const resultDisplay = document.querySelector('#result')
+				answerInput.onkeypress = e => {
+					if(e.key == 'Enter') {
+						const answer = answerInput.value
+						answerInput.value = ''
+						const answerReq = new XMLHttpRequest()
+						answerReq.onreadystatechange = () => {
+							if(answerReq.readyState == 4 && answerReq.status == 200) {
+								const res = JSON.parse(answerReq.response)
+								if('text' in res) resultDisplay.innerText = res.text
+							}
+						}
+						answerReq.open(
+							'GET',
+							'http://192.168.137.111:8080/dunce/replyToAnswer?answer=' + answer
+						)
+						answerReq.send()
+					}
+				}
+
+				document.querySelectorAll('.name').forEach( (nameElement, i) => {
+					nameElement.onmouseenter = mouseEvents[i].enter
+					nameElement.onmouseleave = mouseEvents[i].leave
+				})
+			}
+		</script>
+	</head>
+	<body>
+		<p class='limerick'><span class='name'>flint</span> decides he should take a step forward
+			so <span class='name'>elizabeth</span> moves double that, downward
+			when <span class='name'>giovanni</span> matches pace
+			the queen gets in his face
+			and it seems, white's king has been captur'd
+		</p>
+		<br />
+		<input id='answer'>
+		<br />
+		<span id='result'></span>
+	</body>
+</html>

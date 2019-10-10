@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<title>The Coin</title>
+		<link href='/default.css' rel='stylesheet' />
+		<script id='backgroundDownloadingHuffmanEncoding'>
+			const huffmanTreeReq = new XMLHttpRequest()
+			let huffmanTree
+			//psst! the coin loops every 4 minutes and 6 seconds.
+			huffmanTreeReq.onreadystatechange = () => {
+				if(huffmanTreeReq.readyState == 4 && huffmanTreeReq.status == 200) {
+					huffmanTree = JSON.parse(huffmanTreeReq.response)
+				}
+			}
+			huffmanTreeReq.open('GET', 'http://192.168.137.111:8080/inoxn/coin/huffmanTree')
+			huffmanTreeReq.send()
+		</script>
+
+		<script>
+			window.onload = () => {
+				const coinDisplay = document.querySelector('#result')
+				const coinResultReq = new XMLHttpRequest()
+				coinResultReq.onreadystatechange = () => {
+					if(coinResultReq.readyState == 4 && coinResultReq.status == 200) {
+						setTimeout( () => coinDisplay.innerText = coinResultReq.response, 100 )
+					}
+				}
+
+				const flipCoin = () => {
+					coinDisplay.innerText = ''
+					coinResultReq.open('GET', 'http://192.168.137.111:8080/inoxn/coin/flip')
+					coinResultReq.send()
+				}
+
+				flipCoin()
+				setInterval(flipCoin, 3000)
+			}
+		</script>
+	</head>
+	<body>
+		<p class='limerick'>the coin flips into the air
+			either heads or tails it will bear
+			background downloading
+			a huffman encoding
+			the coin was not built to be fair
+		</p>
+		<b id='result' title='psst! the coin loops every 4 minutes and 6 seconds.'></b>
+	</body>
+</html>
