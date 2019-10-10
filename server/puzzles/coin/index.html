@@ -10,7 +10,7 @@
 				if(huffmanTreeReq.readyState == 4 && huffmanTreeReq.status == 200)
 					huffmanTree = JSON.parse(huffmanTreeReq.response)
 			}
-			huffmanTreeReq.open('GET', 'http://192.168.137.111:8080/inoxn/coin/huffmanTree')
+			huffmanTreeReq.open('GET', '/inoxn/coin/huffmanTree')
 			huffmanTreeReq.send()
 		</script>
 
@@ -25,7 +25,7 @@
 
 				const flipCoin = () => {
 					coinDisplay.innerText = ''
-					coinResultReq.open('GET', 'http://192.168.137.111:8080/inoxn/coin/flip')
+					coinResultReq.open('GET', '/inoxn/coin/flip')
 					coinResultReq.send()
 				}
 

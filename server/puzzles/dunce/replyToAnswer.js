@@ -2,7 +2,7 @@ const answerResponses = [
 	{
 		regex: /^ *fool'?s? ?mate *$/i,
 		response: JSON.stringify({
-			text: 'correct! well done. the url path for the next puzzle is inoxn/coin.'
+			text: 'correct! well done. the next puzzle is at inoxn/coin.'
 		})
 	},
 	{

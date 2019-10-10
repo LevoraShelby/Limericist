@@ -31,10 +31,7 @@
 								if('text' in res) resultDisplay.innerText = res.text
 							}
 						}
-						answerReq.open(
-							'GET',
-							'http://192.168.137.111:8080/dunce/replyToAnswer?answer=' + answer
-						)
+						answerReq.open('GET', '/dunce/replyToAnswer?answer=' + answer)
 						answerReq.send()
 					}
 				}
