@@ -5,11 +5,10 @@
 		<script id='backgroundDownloadingHuffmanEncoding'>
 			const huffmanTreeReq = new XMLHttpRequest()
 			let huffmanTree
-			//psst! the coin loops every 4 minutes and 6 seconds.
+			//psst! the coin loops every 12 minutes and 18 seconds.
 			huffmanTreeReq.onreadystatechange = () => {
-				if(huffmanTreeReq.readyState == 4 && huffmanTreeReq.status == 200) {
+				if(huffmanTreeReq.readyState == 4 && huffmanTreeReq.status == 200)
 					huffmanTree = JSON.parse(huffmanTreeReq.response)
-				}
 			}
 			huffmanTreeReq.open('GET', 'http://192.168.137.111:8080/inoxn/coin/huffmanTree')
 			huffmanTreeReq.send()
@@ -20,9 +19,8 @@
 				const coinDisplay = document.querySelector('#result')
 				const coinResultReq = new XMLHttpRequest()
 				coinResultReq.onreadystatechange = () => {
-					if(coinResultReq.readyState == 4 && coinResultReq.status == 200) {
+					if(coinResultReq.readyState == 4 && coinResultReq.status == 200)
 						setTimeout( () => coinDisplay.innerText = coinResultReq.response, 100 )
-					}
 				}
 
 				const flipCoin = () => {
@@ -43,6 +41,6 @@
 			a huffman encoding
 			the coin was not built to be fair
 		</p>
-		<b id='result' title='psst! the coin loops every 4 minutes and 6 seconds.'></b>
+		<b id='result' title='psst! the coin loops every 12 minutes and 18 seconds.'></b>
 	</body>
 </html>
