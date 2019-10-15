@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<title>The Master</title>
+		<link href='/default.css' rel='stylesheet' />
+		<script src='/jquery.js'></script>
+		<link href='master/chessboard.css' rel='stylesheet'>
+		<script src='master/chessboard.js'></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
+	</head>
+	<body>
+		<p class='limerick'>it is the master that you must defeat
+			quite a mighty foe that is to unseat
+			off sounds the horn
+			so go on, it's your turn
+			there is none the master cannot beat
+		</p>
+		<div id='board' style='width: 400px;'></div>
+		<b><span id='result'></span><b>
+		<script>
+			const black = new WebSocket('ws://192.168.137.111:8080/2mdqj/master/black')
+			const game = new Chess()
+			black.onmessage = e => {
+				const message = JSON.parse(e.data)
+				if(message.type == 'move') {
+					game.move(message.move)
+					board.position(game.fen(), true)
+				}
+				else if(message.type == 'text') {
+					const resultDisplay = document.querySelector('#result')
+					resultDisplay.innerText = message.text
+				}
+			}
+			const makeMove = moveStr => {
+				const move = game.move(moveStr)
+				//temp fix to castling problem. looks weird. TODO: Make not weird.
+				board.position(game.fen(), true)
+				black.send(JSON.stringify(move))
+			}
+
+			const board = Chessboard('board', {
+				draggable: true,
+				position: 'start',
+				onDragStart: (_, piece) => {
+					const isMyTurn = game.turn() == 'w'
+					const isMyPiece = piece[0] == 'w'
+					return isMyTurn && isMyPiece && !game.game_over()
+				},
+				onDrop: (from, to, piece) => {
+					const move = (
+						game.moves({square: from, verbose: true})
+						.find( move => move.to == to )
+					)
+					const isValidMove = move != undefined
+					if(isValidMove) makeMove(move)
+					else return 'snapback'
+				},
+				showErrors: 'console',
+				pieceTheme: 'master/getPiece?name={piece}'
+			})
+		</script>
+	</body>
+</html>

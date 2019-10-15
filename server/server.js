@@ -1,9 +1,11 @@
 const http = require('http')
 const fs = require('fs')
 const url = require('url')
+const WebSocket = require('ws')
 
 const replyToDunceAnswer = require('./puzzles/dunce/replyToAnswer')
-const flipCoin = require('./puzzles/coin/flip')
+const connectCoinFlipStream = require('./puzzles/coin/flipStream')
+const createStockfishRoom = require('./puzzles/master/stockfishServer')
 
 
 const index = {
@@ -15,6 +17,10 @@ const urlPathsToFiles = {
 	'/default.css': {
 		contentType: 'text/css',
 		path: __dirname + '/puzzles/default.css'
+	},
+	'/jquery.js': {
+		contentType: 'text/javascript',
+		path: __dirname + '/jquery-3.4.1.min.js'
 	},
 	'/dunce': {
 		contentType: 'text/html',
@@ -33,29 +39,68 @@ const urlPathsToFiles = {
 		path: __dirname + '/puzzles/books/index.html'
 	},
 	'/2mdqj': {
-		//puzzle after books. fill out later.
+		contentType: 'text/html',
+		path: __dirname + '/puzzles/master/redirect.html'
+	},
+	'/2mdqj/master': {
+		contentType: 'text/html',
+		path: __dirname + '/puzzles/master/index.html'
+	},
+	'/2mdqj/master/chessboard.js': {
+		contentType: 'text/javascript',
+		path: __dirname + '/puzzles/master/chessboard/chessboard.min.js'
+	},
+	'/2mdqj/master/chessboard.css': {
+		contentType: 'text/css',
+		path: __dirname + '/puzzles/master/chessboard/chessboard.min.css'
 	}
 }
 
 const urlPathsToFunctions = {
 	'/dunce/replyToAnswer': replyToDunceAnswer,
-	'/inoxn/coin/flip': flipCoin
+	'/2mdqj/master/getPiece': (res, query) => {
+		fs.createReadStream(__dirname + '/puzzles/master/chessboard/chesspieces/'+query.name+'.png')
+		.pipe(res)
+	}
 }
 
 
 const server = http.createServer( (req, res) => {
-	const urlObj = url.parse(req.url, true)
-	if(urlObj.pathname in urlPathsToFiles) {
-		const { contentType, path: filePath } = urlPathsToFiles[urlObj.pathname]
+	const {pathname, query} = url.parse(req.url, true)
+	if(pathname in urlPathsToFiles) {
+		const { contentType, path: filePath } = urlPathsToFiles[pathname]
 		res.writeHead(200, {'Content-Type': contentType})
 		fs.createReadStream(filePath).pipe(res)
 	}
-	else if(urlObj.pathname in urlPathsToFunctions)
-		urlPathsToFunctions[urlObj.pathname](res, urlObj.query)
+	else if(pathname in urlPathsToFunctions)
+		urlPathsToFunctions[pathname](res, query)
 	else {
 		res.statusCode = 404
 		res.end()
 	}
+})
+
+
+const coinFlipServer = new WebSocket.Server({noServer: true})
+coinFlipServer.on('connection', connectCoinFlipStream)
+
+const stockfishServer = new WebSocket.Server({noServer: true})
+stockfishServer.on('connection', createStockfishRoom)
+
+server.on('upgrade', (req, sock, head) => {
+	const pathname = url.parse(req.url).pathname
+	if(pathname == '/inoxn/coin/flip') {
+		coinFlipServer.handleUpgrade(req, sock, head, conn => {
+			coinFlipServer.emit('connection', conn, req)
+		})
+	}
+	else if(pathname == '/2mdqj/master/black') {
+		stockfishServer.handleUpgrade(req, sock, head, conn => {
+			stockfishServer.emit('connection', conn, req)
+		})
+	}
+	else
+		sock.destroy()
 })
 
 

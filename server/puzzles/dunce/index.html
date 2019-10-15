@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>The Dunce</title>
-		<link href='/default.css' rel='stylesheet' />
+		<link href='default.css' rel='stylesheet' />
 		<script>
 			const mouseEvents = {
 				0: {
@@ -26,10 +26,8 @@
 						answerInput.value = ''
 						const answerReq = new XMLHttpRequest()
 						answerReq.onreadystatechange = () => {
-							if(answerReq.readyState == 4 && answerReq.status == 200) {
-								const res = JSON.parse(answerReq.response)
-								if('text' in res) resultDisplay.innerText = res.text
-							}
+							if(answerReq.readyState == 4 && answerReq.status == 200)
+								resultDisplay.innerText = answerReq.response
 						}
 						answerReq.open('GET', '/dunce/replyToAnswer?answer=' + answer)
 						answerReq.send()
