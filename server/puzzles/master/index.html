@@ -12,12 +12,12 @@
 			quite a mighty foe that is to unseat
 			off sounds the horn
 			so go on, it's your turn
-			there is none the master cannot beat
+			there is none that the master cannot beat
 		</p>
 		<div id='board' style='width: 400px;'></div>
 		<b><span id='result'></span><b>
 		<script>
-			const black = new WebSocket('ws://192.168.137.111:8080/2mdqj/master/black')
+			const black = new WebSocket('ws://192.168.137.109:8080/3a289/master/black')
 			const game = new Chess()
 			black.onmessage = e => {
 				const message = JSON.parse(e.data)
@@ -31,10 +31,10 @@
 				}
 			}
 			const makeMove = moveStr => {
+				//TODO: fix issue where castling and promotion aren't rendered until the other
+				//player has moved.
 				const move = game.move(moveStr)
-				//temp fix to castling problem. looks weird. TODO: Make not weird.
-				board.position(game.fen(), true)
-				black.send(JSON.stringify(move))
+				black.send(move.san)
 			}
 
 			const board = Chessboard('board', {

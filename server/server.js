@@ -38,19 +38,19 @@ const urlPathsToFiles = {
 		contentType: 'text/html',
 		path: __dirname + '/puzzles/books/index.html'
 	},
-	'/2mdqj': {
+	'/3a289': {
 		contentType: 'text/html',
 		path: __dirname + '/puzzles/master/redirect.html'
 	},
-	'/2mdqj/master': {
+	'/3a289/master': {
 		contentType: 'text/html',
 		path: __dirname + '/puzzles/master/index.html'
 	},
-	'/2mdqj/master/chessboard.js': {
+	'/3a289/master/chessboard.js': {
 		contentType: 'text/javascript',
 		path: __dirname + '/puzzles/master/chessboard/chessboard.min.js'
 	},
-	'/2mdqj/master/chessboard.css': {
+	'/3a289/master/chessboard.css': {
 		contentType: 'text/css',
 		path: __dirname + '/puzzles/master/chessboard/chessboard.min.css'
 	}
@@ -58,7 +58,7 @@ const urlPathsToFiles = {
 
 const urlPathsToFunctions = {
 	'/dunce/replyToAnswer': replyToDunceAnswer,
-	'/2mdqj/master/getPiece': (res, query) => {
+	'/3a289/master/getPiece': (res, query) => {
 		fs.createReadStream(__dirname + '/puzzles/master/chessboard/chesspieces/'+query.name+'.png')
 		.pipe(res)
 	}
@@ -94,7 +94,7 @@ server.on('upgrade', (req, sock, head) => {
 			coinFlipServer.emit('connection', conn, req)
 		})
 	}
-	else if(pathname == '/2mdqj/master/black') {
+	else if(pathname == '/3a289/master/black') {
 		stockfishServer.handleUpgrade(req, sock, head, conn => {
 			stockfishServer.emit('connection', conn, req)
 		})

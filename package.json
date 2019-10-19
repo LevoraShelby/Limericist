@@ -15,5 +15,9 @@
     "stockfish": "^10.0.2",
     "url": "^0.11.0",
     "ws": "^7.1.2"
+  },
+  "devDependencies": {
+    "request": "^2.88.0",
+    "sync-request": "^6.1.0"
   }
 }

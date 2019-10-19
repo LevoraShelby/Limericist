@@ -2,7 +2,7 @@
 
 const answerResponses = [
 	{
-		regex: /^ *fool'?s? ?mate *$/i,
+		regex: /^ *fool'?s? *mate *$/i,
 		response: 'correct! well done. the next puzzle is at inoxn/coin.'
 	},
 	{
