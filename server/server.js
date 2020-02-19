@@ -38,19 +38,19 @@ const urlPathsToFiles = {
 		contentType: 'text/html',
 		path: __dirname + '/puzzles/books/index.html'
 	},
-	'/3a289': {
+	'/gdfsk': {
 		contentType: 'text/html',
 		path: __dirname + '/puzzles/master/redirect.html'
 	},
-	'/3a289/master': {
+	'/gdfsk/master': {
 		contentType: 'text/html',
 		path: __dirname + '/puzzles/master/index.html'
 	},
-	'/3a289/master/chessboard.js': {
+	'/gdfsk/master/chessboard.js': {
 		contentType: 'text/javascript',
 		path: __dirname + '/puzzles/master/chessboard/chessboard.min.js'
 	},
-	'/3a289/master/chessboard.css': {
+	'/gdfsk/master/chessboard.css': {
 		contentType: 'text/css',
 		path: __dirname + '/puzzles/master/chessboard/chessboard.min.css'
 	}
@@ -58,7 +58,7 @@ const urlPathsToFiles = {
 
 const urlPathsToFunctions = {
 	'/dunce/replyToAnswer': replyToDunceAnswer,
-	'/3a289/master/getPiece': (res, query) => {
+	'/gdfsk/master/getPiece': (res, query) => {
 		fs.createReadStream(__dirname + '/puzzles/master/chessboard/chesspieces/'+query.name+'.png')
 		.pipe(res)
 	}
@@ -94,7 +94,7 @@ server.on('upgrade', (req, sock, head) => {
 			coinFlipServer.emit('connection', conn, req)
 		})
 	}
-	else if(pathname == '/3a289/master/black') {
+	else if(pathname == '/gdfsk/master/black') {
 		stockfishServer.handleUpgrade(req, sock, head, conn => {
 			stockfishServer.emit('connection', conn, req)
 		})
