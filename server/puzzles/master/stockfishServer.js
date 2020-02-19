@@ -3,7 +3,7 @@ const Chess = require('chess.js').Chess
 const stockfish = require('stockfish')
 
 
-//TODO: Fix engine so that it works asynchronously. (might require proxy server not run in node).
+//TODO: Fix engine so that it doesn't lag. (might require proxy server not run in node).
 const createRoom = (conn, req) => {
 	const engine = stockfish()
 	engine.postMessage('uci')

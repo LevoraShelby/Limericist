@@ -104,4 +104,7 @@ server.on('upgrade', (req, sock, head) => {
 })
 
 
-server.listen(8080)
+server.listen({
+	host: 'localhost',
+	port: 8080
+})
