@@ -3,20 +3,20 @@
 		<title>The Dunce</title>
 		<link href='default.css' rel='stylesheet' />
 		<script>
-			const mouseEvents = {
-				0: {
+			const mouseEvents = [
+				{
 					enter: e => e.target.innerText = 'f2int',
 					leave: e => e.target.innerText = 'flint'
 				},
-				1: {
+				{
 					enter: e => e.target.innerText = 'e7izabeth',
 					leave: e => e.target.innerText = 'elizabeth'
 				},
-				2: {
+				{
 					enter: e => e.target.innerText = 'g2ovanni',
 					leave: e => e.target.innerText = 'giovanni'
 				}
-			}
+			]
 			window.onload = () => {
 				const answerInput = document.querySelector('#answer')
 				const resultDisplay = document.querySelector('#result')
